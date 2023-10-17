@@ -3,15 +3,16 @@ package com.example.sabloanelab;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Book {
+public class Book{
     private String title;
 
-    private List<Chapter> chapters;
+    private List<Element> sections;
     private List<Author> authors;
-    public Book(String title, List<Chapter> chapters){
+
+    public Book(String title, List<Element> sections){
         this.title = title;
 
-        this.chapters = chapters;
+        this.sections = sections;
     }
 
     public void addAuthor(Author a){
@@ -19,25 +20,36 @@ public class Book {
     }
 
     public Book(String title){
-        title =  title;
+        this.title =  title;
         authors = new ArrayList<Author>();
-        chapters = null;
+        sections = null;
     }
 
-    public int createChapter(String ChapterTitle){
-        if (chapters == null){
-            chapters = new ArrayList<Chapter>();
+    public int createSection(String ChapterTitle){
+        if (sections == null){
+            sections = new ArrayList<Element>();
         }
-        Chapter newChapter = new Chapter("ChapterTitle");
-        chapters.add(newChapter);
-        return chapters.size();
+        Section newSection = new Section("ChapterTitle");
+        sections.add(newSection);
+        return sections.size();
     }
 
     public void print(){
-        System.out.println("Book title: " + title);
+        System.out.println("Book: " + title);
+        System.out.println("\nAuthors: ");
+        for(Author a: authors)
+            a.print();
+        System.out.println();
+        for(Element e:sections)
+            e.print();
     }
 
-    public Chapter getChapter(int index) {
-        return chapters.get(index - 1);
+    public Element getSection(int index) {
+        return sections.get(index - 1);
+    }
+
+    public void addContent(Element paragraph) {
+        if(sections == null) sections = new ArrayList<Element>();
+        sections.add(paragraph);
     }
 }
