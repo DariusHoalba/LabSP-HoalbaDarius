@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.awt.*;
 
@@ -7,16 +7,16 @@ public class ImageProxy implements Picture, Element{
     String url;
     Dimension dim;
 
-    Image realImage;
+    uvt.models.Image realImage;
 
-    ImageProxy(String url, Dimension dim, Image realImage)
+    ImageProxy(String url, Dimension dim, uvt.models.Image realImage)
     {
         this.url = url;
         this.dim = dim;
         this.realImage = realImage;
     }
 
-    ImageProxy(String url){
+    public ImageProxy(String url){
         this.url = url;
         dim = null;
         realImage = null;
@@ -36,7 +36,7 @@ public class ImageProxy implements Picture, Element{
         return null;
     }
 
-    private Image loadImage(){
+    public uvt.models.Image loadImage(){
         if (realImage == null) {
             realImage = new Image(url);
         }
@@ -61,5 +61,10 @@ public class ImageProxy implements Picture, Element{
     @Override
     public Element get(int i) {
         return null;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitImageProxy(this);
     }
 }

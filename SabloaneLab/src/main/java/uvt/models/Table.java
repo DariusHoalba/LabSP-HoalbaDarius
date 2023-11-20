@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 public class Table implements Element{
     private String name;
@@ -24,5 +24,14 @@ public class Table implements Element{
     @Override
     public Element get(int i) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitTable(this);
+    }
+
+    public String getTitle() {
+        return name;
     }
 }

@@ -1,4 +1,4 @@
-package com.difexample.sabloanelab;
+package uvt.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

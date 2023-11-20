@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +51,17 @@ public class Book{
     public void addContent(Element paragraph) {
         if(sections == null) sections = new ArrayList<Element>();
         sections.add(paragraph);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Iterable<? extends Author> getAuthors() {
+        return authors;
+    }
+
+    public List<Element> getSections(){
+        return sections;
     }
 }

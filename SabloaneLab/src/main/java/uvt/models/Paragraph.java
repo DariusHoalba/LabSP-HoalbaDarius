@@ -1,4 +1,7 @@
-package com.example.sabloanelab;
+package uvt.models;
+
+import uvt.services.AlignLeft;
+import uvt.services.AlignStrategy;
 
 public class Paragraph implements Element{
     private String name;
@@ -33,5 +36,14 @@ public class Paragraph implements Element{
 
     public void setAlignStrategy(AlignStrategy align) {
         this.align = align;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitParagraph(this);
+    }
+
+    public String getText() {
+        return name;
     }
 }

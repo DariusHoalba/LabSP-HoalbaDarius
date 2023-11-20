@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +42,9 @@ public class Subchapter {
             e.print();
             System.out.println('\n');
         }
+    }
+
+    public String getTitle() {
+        return name;
     }
 }

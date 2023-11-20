@@ -1,11 +1,10 @@
-package com.example.sabloanelab;
+package uvt.services;
 
-public class AlignCenter implements AlignStrategy{
-
+public class AlignRight implements AlignStrategy {
     @Override
     public void render(String text) {
         int width = 80;
-        int padSize = (width - text.length()) / 2;
+        int padSize = (width - text.length());
         String pad = String.format("%"+padSize+"s", "");
         System.out.println(pad + text);
     }

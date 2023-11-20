@@ -1,4 +1,4 @@
-package com.difexample.sabloanelab;
+package uvt.services;
 
 import org.springframework.stereotype.Component;
 

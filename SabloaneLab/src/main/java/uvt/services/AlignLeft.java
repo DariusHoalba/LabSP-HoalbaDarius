@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.services;
 
 public class AlignLeft implements AlignStrategy{
     @Override

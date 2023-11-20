@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +17,7 @@ public class Image implements Element{
         }
     }
 
-    Image(String url){
+    public Image(String url){
         this.url = url;
         try{
             TimeUnit.SECONDS.sleep(5);
@@ -45,5 +45,14 @@ public class Image implements Element{
     @Override
     public Element get(int i) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitImage(this);
+    }
+
+    public String getImageName() {
+        return name;
     }
 }

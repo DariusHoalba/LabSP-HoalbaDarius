@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package com.example.sabloanelab;
+package uvt.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +31,20 @@ public class Section implements Element{
     @Override
     public Element get(int i){
         return children.get(i);
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitSection(this);
+        for(Element element :this.children)
+            element.accept(visitor);
+    }
+
+    public String getName() {
+        return title;
+    }
+
+    public Iterable<? extends Element> getContent() {
+        return children;
     }
 }
