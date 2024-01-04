@@ -1,15 +1,59 @@
 package uvt.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uvt.models.*;
+import uvt.services.BooksService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+
+    private BooksService booksService;
+
+    @Autowired
+    public BookController(BooksService booksService) {
+        this.booksService = booksService;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Book>> getAllBooks(){
+        List<Book> books = booksService.getAllBooks();
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<Book> getBookById(@PathVariable String name){
+        Book book = booksService.getBookByName(name);
+        if(book == null)
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(book, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addBook(@RequestBody Book book){
+        booksService.addBook(book);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/delete/{name}")
+    public ResponseEntity<?> deleteBook(@PathVariable String name){
+        Book book = booksService.getBookByName(name);
+        if(book == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        booksService.deleteBook(book);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateBook(@RequestBody Book book){
+        booksService.updateBook(book);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @GetMapping("/statistics")
     public ResponseEntity<?> printStatistics(){

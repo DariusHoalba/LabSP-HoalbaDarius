@@ -57,11 +57,19 @@ public class Book{
         return title;
     }
 
-    public Iterable<? extends Author> getAuthors() {
-        return authors;
-    }
-
     public List<Element> getSections(){
         return sections;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void setSections(List<Element> sections) {
+        this.sections = sections;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
     }
 }

@@ -23,6 +23,15 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'junit:junit:4.13.1'
+    implementation 'junit:junit:4.13.1'
+    // Spring AOP Dependency
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.aspectj:aspectjrt:1.9.7'
+
+// AspectJ Dependency
+    implementation 'org.aspectj:aspectjrt:1.9.6' // Use the latest version available
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
