@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uvt.commands.*;
 import uvt.models.*;
 import uvt.services.BooksService;
 
@@ -34,25 +35,43 @@ public class BookController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addBook(@RequestBody Book book){
-        booksService.addBook(book);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/create")
+    public ResponseEntity<?> createBook(@RequestBody Book book) {
+        CreateBookCommand createBookCommand = new CreateBookCommand(booksService);
+        createBookCommand.setBook(book);
+        createBookCommand.execute();
+        return new ResponseEntity<>("Book created successfully", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{name}")
-    public ResponseEntity<?> deleteBook(@PathVariable String name){
-        Book book = booksService.getBookByName(name);
-        if(book == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        booksService.deleteBook(book);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?>deleteBook(@PathVariable String name){
+        DeleteBookCommand deleteBookCommand = new DeleteBookCommand(booksService);
+        deleteBookCommand.setBookName(name);
+        deleteBookCommand.execute();
+        return new ResponseEntity<>("Book deleted successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateBook(@RequestBody Book book){
-        booksService.updateBook(book);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/getAll")
+    public ResponseEntity<?>getAll(){
+        GetAllBooksCommand getAllBooksCommand = new GetAllBooksCommand(booksService);
+        getAllBooksCommand.execute();
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{name}")
+    public ResponseEntity<?>getBook(@PathVariable String name){
+        GetBookByNameCommand getBookByNameCommand = new GetBookByNameCommand(booksService);
+        getBookByNameCommand.setBookName(name);
+        getBookByNameCommand.execute();
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{name}")
+    public ResponseEntity<?>updateBook(@PathVariable String name){
+        UpdateBookCommand updateBookCommand = new UpdateBookCommand(booksService);
+        updateBookCommand.setBookName(name);
+        updateBookCommand.execute();
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @GetMapping("/statistics")
@@ -75,4 +94,5 @@ public class BookController {
         stats.printStatistics();
         return new ResponseEntity<>("", HttpStatus.OK);
     }
+
 }
