@@ -10,6 +10,10 @@ public abstract class  Element implements Visitee{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "subchapter_id") // Foreign key reference to Subchapter
+    private Subchapter subchapter;
+
     public Element(){}
 
     abstract void print();

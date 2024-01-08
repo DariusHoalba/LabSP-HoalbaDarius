@@ -1,17 +1,33 @@
 package uvt.models;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Subchapter {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+
     private String name;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subchapter")
     private List<Element> elements;
+
+    @ManyToOne
+    @JoinColumn(name = "chapter_id") // Foreign key reference to Chapter
+    private Chapter chapter;
 
     Subchapter(String name, List<Element> elements){
         this.name=name;
         this.elements = elements;
     }
+
+    public Subchapter(){}
 
     Subchapter(String name){
         this.name = name;

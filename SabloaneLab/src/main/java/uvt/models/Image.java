@@ -1,30 +1,27 @@
 package uvt.models;
 
+import jakarta.persistence.*;
+
 import java.util.concurrent.TimeUnit;
 
+@Entity
 public class Image extends Element{
+
+    @Column(name = "url")
     private String url;
     private String name;
+
+    public Image(){}
 
     Image(String url, String name){
         this.url = url;
         this.name = name;
-        try{
-            TimeUnit.SECONDS.sleep(5);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        //TimeUnit.SECONDS.sleep(5);
     }
 
     public Image(String url){
         this.url = url;
-        try{
-            TimeUnit.SECONDS.sleep(5);
-        }
-        catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        //TimeUnit.SECONDS.sleep(5);
     }
 
     @Override
@@ -54,5 +51,9 @@ public class Image extends Element{
 
     public String getImageName() {
         return name;
+    }
+
+    public void setImageName(String name) {
+        this.name = name;
     }
 }
