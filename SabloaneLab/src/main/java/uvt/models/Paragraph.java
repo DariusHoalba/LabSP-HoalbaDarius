@@ -3,7 +3,7 @@ package uvt.models;
 import uvt.services.AlignLeft;
 import uvt.services.AlignStrategy;
 
-public class Paragraph implements Element{
+public class Paragraph extends Element{
     private String name;
     private AlignStrategy align;
     public Paragraph(String name){

@@ -2,7 +2,7 @@ package uvt.models;
 
 import java.awt.*;
 
-public class ImageProxy implements Picture, Element{
+public class ImageProxy extends Element implements Picture {
 
     String url;
     Dimension dim;

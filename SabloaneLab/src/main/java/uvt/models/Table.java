@@ -1,6 +1,6 @@
 package uvt.models;
 
-public class Table implements Element{
+public class Table extends Element{
     private String name;
     public Table(String name){
         this.name = name;

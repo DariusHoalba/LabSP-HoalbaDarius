@@ -2,7 +2,7 @@ package uvt.models;
 
 import java.util.concurrent.TimeUnit;
 
-public class Image implements Element{
+public class Image extends Element{
     private String url;
     private String name;
 

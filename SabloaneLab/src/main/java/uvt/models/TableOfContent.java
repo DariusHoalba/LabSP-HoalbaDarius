@@ -3,7 +3,7 @@ package uvt.models;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TableOfContent implements Element{
+public class TableOfContent extends Element{
 
     private Map<String, Integer> entries = new LinkedHashMap<>();
     public void print(){

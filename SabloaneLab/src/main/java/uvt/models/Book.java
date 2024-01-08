@@ -1,13 +1,25 @@
 package uvt.models;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Book{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String title;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id")
     private List<Element> sections;
+
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Author> authors;
+
+    public Book(){}
 
     public Book(String title, List<Element> sections){
         this.title = title;
