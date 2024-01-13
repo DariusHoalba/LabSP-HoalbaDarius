@@ -6,7 +6,7 @@ public class RenderContentVisitor implements Visitor {
 
     @Override
     public void visitImageProxy(ImageProxy imageProxy) {
-        imageProxy.loadImage().accept(this);
+        imageProxy.loadRealImage().accept(this);
     }
 
     @Override

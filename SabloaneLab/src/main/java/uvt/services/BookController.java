@@ -1,98 +1,85 @@
 package uvt.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uvt.commands.*;
 import uvt.models.*;
-import uvt.services.BooksService;
+import uvt.repos.BookRepository;
+import uvt.repos.AuthorRepository;
+import uvt.repos.SectionRepository;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+    //private List<Book> books = new ArrayList<>();
+    private final CreateBookCommand addBook;
+    private final DeleteBookCommand deleteBook;
+    private final UpdateBookCommand updateBook;
+    private final GetAllBooksCommand getAllBooks;
+    private final GetBookByNameCommand getBookByName;
 
-    private BooksService booksService;
+    private final BookRepository bookRepository;
+    private final SectionRepository sectionRepository;
+    private final AuthorRepository authorRepository;
 
     @Autowired
-    public BookController(BooksService booksService) {
-        this.booksService = booksService;
+    public BookController(CreateBookCommand addBook, DeleteBookCommand deleteBook, UpdateBookCommand updateBook, GetAllBooksCommand getAllBooks, GetBookByNameCommand getBookByName, BookRepository bookRepository, SectionRepository sectionRepository, AuthorRepository authorRepository) {
+        this.addBook = addBook;
+        this.deleteBook = deleteBook;
+        this.updateBook = updateBook;
+        this.getAllBooks = getAllBooks;
+        this.getBookByName = getBookByName;
+        this.bookRepository = bookRepository;
+        this.sectionRepository = sectionRepository;
+        this.authorRepository = authorRepository;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getAllBooks(){
-        List<Book> books = booksService.getAllBooks();
-        return new ResponseEntity<>(books, HttpStatus.OK);
-    }
-
-    @GetMapping("/{name}")
-    public ResponseEntity<Book> getBookById(@PathVariable String name){
-        Book book = booksService.getBookByName(name);
-        if(book == null)
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public List<Book> getAllBooks() {
+        /*List<Book> books = getAllBooks.execute();
+        for (Book book : books) {
+            System.out.println(book.getTitle());
+        }*/
+        return getAllBooks.execute();
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createBook(@RequestBody Book book) {
-        CreateBookCommand createBookCommand = new CreateBookCommand(booksService);
-        createBookCommand.setBook(book);
-        createBookCommand.execute();
-        return new ResponseEntity<>("Book created successfully", HttpStatus.CREATED);
+    public CompletableFuture<Book> createBook(@RequestBody Book book) throws IOException {
+        List<Author> authors = book.getAuthors();
+        for (Author author : authors) {
+            authorRepository.save(author);
+        }
+        for(Element e:book.getSections()){
+            sectionRepository.save((Section) e);
+        }
+
+        addBook.setBook(book);
+        return addBook.execute();
     }
 
-    @DeleteMapping("/delete/{name}")
-    public ResponseEntity<?>deleteBook(@PathVariable String name){
-        DeleteBookCommand deleteBookCommand = new DeleteBookCommand(booksService);
-        deleteBookCommand.setBookName(name);
-        deleteBookCommand.execute();
-        return new ResponseEntity<>("Book deleted successfully", HttpStatus.OK);
+
+    @GetMapping("books/{name}")
+    public Optional<Book> getBookById(@PathVariable String name) {
+        getBookByName.setBookName(name);
+        return getBookByName.execute();
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<?>getAll(){
-        GetAllBooksCommand getAllBooksCommand = new GetAllBooksCommand(booksService);
-        getAllBooksCommand.execute();
-        return new ResponseEntity<>("", HttpStatus.OK);
+
+    @PutMapping("/books/{id}")
+    public Book updateBook(@PathVariable Integer id, @RequestBody Book updatedBook) {
+        updateBook.setBook(id,updatedBook);
+        return updateBook.execute();
     }
 
-    @GetMapping("/get/{name}")
-    public ResponseEntity<?>getBook(@PathVariable String name){
-        GetBookByNameCommand getBookByNameCommand = new GetBookByNameCommand(booksService);
-        getBookByNameCommand.setBookName(name);
-        getBookByNameCommand.execute();
-        return new ResponseEntity<>("", HttpStatus.OK);
-    }
-
-    @PutMapping("/update/{name}")
-    public ResponseEntity<?>updateBook(@PathVariable String name){
-        UpdateBookCommand updateBookCommand = new UpdateBookCommand(booksService);
-        updateBookCommand.setBookName(name);
-        updateBookCommand.execute();
-        return new ResponseEntity<>("", HttpStatus.OK);
-    }
-
-    @GetMapping("/statistics")
-    public ResponseEntity<?> printStatistics(){
-        Section cap1 = new Section("Capitolul 1");
-        Paragraph p1 = new Paragraph("Paragraph 1");
-        cap1.add(p1);
-        Paragraph p2 = new Paragraph("Paragraph 2");
-        cap1.add(p2);
-        Paragraph p3 = new Paragraph("Paragraph 3");
-        cap1.add(p3);
-        Paragraph p4 = new Paragraph("Paragraph 4");
-        cap1.add(p4);
-        cap1.add(new ImageProxy("ImageOne"));
-        cap1.add(new Image("ImageTwo"));
-        cap1.add(new Paragraph("Some text"));
-        cap1.add(new Table("Table 1"));
-        BookStatistics stats = new BookStatistics();
-        cap1.accept(stats);
-        stats.printStatistics();
-        return new ResponseEntity<>("", HttpStatus.OK);
+    @DeleteMapping("/books/{id}")
+    public void deleteBook(@PathVariable Integer id) {
+        deleteBook.setId(id);
+        deleteBook.execute();
     }
 
 }

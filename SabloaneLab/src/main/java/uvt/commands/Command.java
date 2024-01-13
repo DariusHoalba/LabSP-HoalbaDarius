@@ -1,5 +1,6 @@
 package uvt.commands;
 
-public interface Command {
-    void execute();
+public interface Command <T> {
+    T execute();
+
 }

@@ -1,9 +1,7 @@
 package uvt;
 
-import uvt.models.Book;
-import uvt.models.Element;
-import uvt.models.Paragraph;
-import uvt.models.Section;
+import uvt.models.*;
+import uvt.repos.BookRepository;
 import uvt.services.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.List;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"uvt.models", "uvt.services"})
+@ComponentScan(basePackages = {"uvt.models", "uvt.services", "uvt.repos", "uvt.commands"})
 public class   SabloaneLabApplication {
 
     public static void main(String[] args) {
@@ -36,21 +34,15 @@ public class   SabloaneLabApplication {
         c = (ClientComponent)context.getBean("clientComponent");
         c.operation();*/
 
+        Author a1 = new Author("Author1");
+        Author a2 = new Author("Author2");
 
-        BooksService booksService = context.getBean(BooksService.class);
-        BookController bookController = context.getBean(BookController.class);
+        Book b1 = new Book("Book1");
+        b1.addAuthor(a1);
+        b1.addAuthor(a2);
 
-        Book book = new Book("Carte1");
+        BookRepository bookRepository = context.getBean(BookRepository.class);
 
-        Section cap1 = new Section("Capitolul 1");
-        cap1.add(new Paragraph("Paragraph 1"));
-        cap1.add(new Paragraph("Paragraph 2"));
-        cap1.add(new Paragraph("Paragraph 3"));
-        book.addContent(cap1);
-        book.addContent(new Paragraph("Multumesc!"));
-        bookController.createBook(book);
-        bookController.getAll();
-
-
+        bookRepository.save(b1);
     }
 }

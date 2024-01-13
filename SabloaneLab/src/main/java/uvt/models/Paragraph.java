@@ -1,15 +1,30 @@
 package uvt.models;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
 import uvt.services.AlignLeft;
 import uvt.services.AlignStrategy;
 
-public class Paragraph extends Element{
+@Data
+@Entity
+public class Paragraph extends BaseElement implements Element,Visitee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Getter
     private String name;
+
+    @Transient
     private AlignStrategy align;
     public Paragraph(String name){
         this.name = name;
         align = new AlignLeft();
     }
+
+    public Paragraph(){}
 
     @Override
     public void print(){
@@ -17,6 +32,11 @@ public class Paragraph extends Element{
             System.out.println("Paragraph: " + name);
         else
             align.render(name);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     @Override

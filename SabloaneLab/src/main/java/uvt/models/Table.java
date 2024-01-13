@@ -1,7 +1,18 @@
 package uvt.models;
 
-public class Table extends Element{
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity(name = "ModelTable")
+public class Table extends BaseElement implements Element,Visitee{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
+
+    public Table(){}
     public Table(String name){
         this.name = name;
     }

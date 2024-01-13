@@ -1,32 +1,36 @@
 package uvt.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.util.concurrent.TimeUnit;
 
+@JsonTypeName("image")
 @Entity
-public class Image extends Element{
+@Data
+public class Image extends BaseElement implements Element {
+    private String imagename;
 
-    @Column(name = "url")
-    private String url;
-    private String name;
+    public Image(String imagename){
+        this.imagename = imagename;
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-    public Image(){}
-
-    Image(String url, String name){
-        this.url = url;
-        this.name = name;
-        //TimeUnit.SECONDS.sleep(5);
     }
 
-    public Image(String url){
-        this.url = url;
-        //TimeUnit.SECONDS.sleep(5);
+    public Image() {
+
     }
 
     @Override
     public void print(){
-        System.out.println("Image with URL: " + url) ;
+        System.out.println("Image with name: " + imagename);
     }
 
     @Override
@@ -50,10 +54,10 @@ public class Image extends Element{
     }
 
     public String getImageName() {
-        return name;
+        return imagename;
     }
 
-    public void setImageName(String name) {
-        this.name = name;
+    public void setImageName(String imagename) {
+        this.imagename = imagename;
     }
 }
