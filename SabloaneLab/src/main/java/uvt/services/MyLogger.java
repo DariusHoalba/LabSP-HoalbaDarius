@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 public class MyLogger {
     private final Logger logger = LoggerFactory.getLogger(Logger.class);
 
-    @Before("execution(* uvt.services.BookController.*(..))")
+    @Before("execution(* uvt.controllers.BookController.*(..))")
     public void logBefore(JoinPoint joinPoint) {
         logger.info("Before: " + joinPoint);
     }
 
-    @After("execution(* uvt.services.BookController.*(..))")
+    @After("execution(* uvt.controllers.BookController.*(..))")
     public void logAfter(JoinPoint joinPoint) {
         logger.info("After: " + joinPoint);
     }

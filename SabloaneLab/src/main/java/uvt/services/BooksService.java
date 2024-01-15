@@ -1,6 +1,8 @@
 package uvt.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import uvt.models.Book;
 import uvt.repos.BookRepository;
@@ -13,6 +15,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@EnableAsync(proxyTargetClass = true)
+
 public class BooksService {
     private List<Book> books = new ArrayList<>();
     private final BookRepository bookRepository;
@@ -36,6 +40,8 @@ public class BooksService {
                 .orElse(null);
     }
 
+
+    @Async
     public CompletableFuture<Book> addBook(Book book) {
         Book createdBook = bookRepository.save(book);
         return CompletableFuture.completedFuture(createdBook);

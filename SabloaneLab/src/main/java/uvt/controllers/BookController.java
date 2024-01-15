@@ -1,4 +1,4 @@
-package uvt.services;
+package uvt.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +27,10 @@ public class BookController {
     private final SectionRepository sectionRepository;
     private final AuthorRepository authorRepository;
 
+    private final AllBooksSubject allBooksSubject;
+
     @Autowired
-    public BookController(CreateBookCommand addBook, DeleteBookCommand deleteBook, UpdateBookCommand updateBook, GetAllBooksCommand getAllBooks, GetBookByNameCommand getBookByName, BookRepository bookRepository, SectionRepository sectionRepository, AuthorRepository authorRepository) {
+    public BookController(CreateBookCommand addBook, DeleteBookCommand deleteBook, UpdateBookCommand updateBook, GetAllBooksCommand getAllBooks, GetBookByNameCommand getBookByName, BookRepository bookRepository, SectionRepository sectionRepository, AuthorRepository authorRepository, AllBooksSubject allBooksSubject) {
         this.addBook = addBook;
         this.deleteBook = deleteBook;
         this.updateBook = updateBook;
@@ -37,6 +39,7 @@ public class BookController {
         this.bookRepository = bookRepository;
         this.sectionRepository = sectionRepository;
         this.authorRepository = authorRepository;
+        this.allBooksSubject = allBooksSubject;
     }
 
     @GetMapping("/all")
@@ -59,6 +62,7 @@ public class BookController {
         }
 
         addBook.setBook(book);
+        allBooksSubject.add(book);
         return addBook.execute();
     }
 
